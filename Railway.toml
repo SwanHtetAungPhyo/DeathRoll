@@ -1,0 +1,3 @@
+[service]
+name = "deahroll-api"
+port = 3000
