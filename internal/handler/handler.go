@@ -22,3 +22,7 @@ func NewInformerHandler() *InformerHandler {
 func (i *InformerHandler) AddNewInformation(c *fiber.Ctx) error {
 	panic("implement me")
 }
+
+func (i *InformerHandler) CreateDonation(ctx *fiber.Ctx) error {
+	panic("implement me")
+}

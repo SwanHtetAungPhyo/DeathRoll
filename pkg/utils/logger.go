@@ -7,8 +7,8 @@ import (
 
 var logger *logrus.Logger
 
-func init() {
-	// Initialize the logger instance
+func Init() {
+
 	logger = &logrus.Logger{
 		Out: os.Stdout,
 		Formatter: &logrus.TextFormatter{
@@ -20,5 +20,5 @@ func init() {
 }
 
 func NewLogger(name string) *logrus.Logger {
-	return logger.WithField("service", name).Logger
+	return logger
 }

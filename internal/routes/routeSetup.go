@@ -7,24 +7,42 @@ import (
 
 func SetupRoutes(app *fiber.App) {
 	informerHandler := handler.NewInformerHandler()
-	informationHub := app.Group("/information")
-	informationHub.Get("/", informerHandler.AddNewInformation)
 
-	deathRoutes := informationHub.Group("/death")
-	deathRoutes.Get("/", informerHandler.AddNewInformation)
-	deathRoutes.Post("/", informerHandler.AddNewInformation)
+	// Disaster Reports API
+	reports := app.Group("/reports")
+	{
+		// Death reports
+		death := reports.Group("/death")
+		death.Post("/", informerHandler.ReportDeath)    // Submit death toll
+		death.Get("/", informerHandler.GetDeathReports) // Get death reports
 
-	damageRoutes := informationHub.Group("/damage")
-	damageRoutes.Get("/", informerHandler.AddNewInformation)
-	damageRoutes.Post("/", informerHandler.AddNewInformation)
+		// Damage reports
+		damage := reports.Group("/damage")
+		damage.Post("/", informerHandler.ReportDamage) // Submit damage assessment
+		damage.Get("/", informerHandler.GetDamageReports)
 
-	donation := informationHub.Group("/donation")
-	donation.Get("/", informerHandler.AddNewInformation)
+		// Injury reports
+		injury := reports.Group("/injury")
+		injury.Post("/", informerHandler.ReportInjury) // Submit injury count
+		injury.Get("/", informerHandler.GetInjuryReports)
+	}
 
-	donator := app.Group("/donator")
-	donator.Get("/", informerHandler.AddNewInformation)
+	// Donation Management
+	donations := app.Group("/donations")
+	{
+		donations.Get("/", informerHandler.GetDonations)    // List all donations
+		donations.Post("/", informerHandler.CreateDonation) // Create new donation
+		donations.Get("/:id", informerHandler.GetDonationByID)
+	}
 
-	fundRaiser := app.Group("/fundraiser")
-	fundRaiser.Get("/", informerHandler.AddNewInformation)
-	fundRaiser.Post("/", informerHandler.AddNewInformation)
+	// Fundraiser Management
+	fundraisers := app.Group("/fundraisers")
+	{
+		fundraisers.Get("/", informerHandler.GetApprovedFundraisers)   // List approved fundraisers
+		fundraisers.Post("/", informerHandler.SubmitFundraiserRequest) // Submit new fundraiser request
+		fundraisers.Patch("/:id/approve", informerHandler.ApproveFundraiser)
+	}
+
+	// Live Updates WebSocket
+	app.Get("/ws/disaster-updates", informerHandler.HandleLiveUpdates)
 }
