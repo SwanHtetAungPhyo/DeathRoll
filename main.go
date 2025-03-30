@@ -1,16 +1,15 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"DeathRoll/cmd"
+	"DeathRoll/internal/config"
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
 	app := fiber.New()
+	cfg := config.NewConfiguration()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"hello": "world",
-		})
-	})
-	if err := app.Listen(":3000"); err != nil {
-		panic(err)
-	}
+	cmd.Start(app, cfg)
+
 }
