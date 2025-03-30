@@ -15,7 +15,7 @@ func Start(app *fiber.App, cfg *config.Configuration) {
 	routes.SetupRoutes(app)
 
 	go func() {
-		if err := app.Listen(":8080"); err != nil {
+		if err := app.Listen(":3000"); err != nil {
 			cmdLogger.Fatal(err.Error())
 		}
 	}()
